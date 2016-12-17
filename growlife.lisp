@@ -78,26 +78,54 @@
     (map 'nil #'(lambda (x) (draw-face (first x) (second x))) faces)))
 
 (defun cube-at (cx cy cz dx dy dz)
-  (let ((cube-verts #(#(0 0 0)
-                      #(0 1 0)
-                      #(1 1 0)
-                      #(1 0 0)
-                      #(0 0 1)
-                      #(0 1 1)
-                      #(1 1 1)
-                      #(1 0 1)))
- 
-        (cube-norms '((#(4 7 6 5) #(0 0 1))
-                      (#(5 6 2 1) #(0 1 0))
-                      (#(1 2 3 0) #(0 0 -1))
-                      (#(0 3 7 4) #(0 -1 0))
-                      (#(4 5 1 0) #(-1 0 0))
-                      (#(3 2 6 7) #(1 0 0)))))
+  (let ((cube-verts #(
+                      ;; Top corners
+                      #(-0.5 -0.5 0.5)
+                      #(-0.5 0.5 0.5)
+                      #(0.5 0.5 0.5)
+                      #(0.5 -0.5 0.5)
+
+                      ;; Bottom corners
+                      #(-0.5 -0.5 -0.5)
+                      #(-0.5 0.5 -0.5)
+                      #(0.5 0.5 -0.5)
+                      #(0.5 -0.5 -0.5)))
+
+        (cube-normals #(#(0.0 0.0 1.0)
+                        #(0.0 0.0 -1.0)
+                        #(0.0 -1.0 0.0)
+                        #(0.0 1.0 0.0)
+                        #(-1.0 0.0 0.0)
+                        #(1.0 0.0 0.0)
+                        
+                        
+                        ))
+        (indices #(
+                   #(0 1 2 3 0 0 0 0)
+                   #(4 5 6 7 1 1 1 1)
+                   #(0 1 5 4 2 2 2 2)
+                   #(2 3 7 6 3 3 3 3)
+                   #(1 2 6 5 5 5 5 5)
+                   #(3 0 4 7 4 4 4 4))))
+
     (gl:push-matrix)
+
     (gl:translate cx cy cz)
     (gl:scale dx dy dz)
-    (draw-cube cube-verts cube-norms)
+
+    (gl:with-primitives :quads
+      (loop for index across indices
+         do
+           (dotimes (i 4)
+             (gl:normal (aref (aref cube-normals (aref index (+ 4 i))) 0)
+                        (aref (aref cube-normals (aref index (+ 4 i))) 1)
+                        (aref (aref cube-normals (aref index (+ 4 i))) 2))
+             (gl:vertex (aref (aref cube-verts (aref index i)) 0)
+                        (aref (aref cube-verts (aref index i)) 1)
+                        (aref (aref cube-verts (aref index i)) 2)))))
     (gl:pop-matrix)))
+
+
 
 (defun draw-board (boards win-width win-height &key (multiplier 1.5))
   "Used OpenGL to display the grid."
