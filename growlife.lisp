@@ -162,7 +162,7 @@
       (sdl:window win-width win-height
                   :fullscreen fullscreen
                   :opengl t
-                  :opengl-attributes '((:sdl-gl-depth-size   16)
+                  :opengl-attributes '((:sdl-gl-depth-size   24)
                                        (:sdl-gl-doublebuffer 1)))
       (setf (sdl:frame-rate) fps)
       
@@ -208,7 +208,7 @@
          (if (= state 1)
              (progn
                (incf yrot (/ xrel 10))
-               (incf xrot (- (/ yrel 10)))
+               (incf xrot (/ yrel 10))
                ))
          (if (= state 4)
              (progn
