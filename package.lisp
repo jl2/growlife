@@ -1,6 +1,5 @@
 ;;;; package.lisp
 
 (defpackage #:growlife
-  (:use #:cl #:alexandria)
-  (:export #:start-life))
-
+  (:use #:cl+qt #:alexandria)
+  (:export #:main))

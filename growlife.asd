@@ -4,11 +4,19 @@
   :serial t
   :description "Describe growlife here"
   :author "Jeremiah LaRocco <jeremiah.larocco@gmail.com>"
-  :license "Specify license here"
-  :depends-on (#:lispbuilder-sdl
+  :license "ISC"
+  :depends-on (
+               #:alexandria
+               #:qt
+               #:qtools
+               #:qtgui
+               #:qtcore
+               #:qtopengl
                #:cl-opengl
                #:cl-glu
-               #:alexandria)
+               #:trivial-garbage
+               #:trivial-main-thread
+               )
   :components ((:file "package")
                (:file "growlife")))
 
